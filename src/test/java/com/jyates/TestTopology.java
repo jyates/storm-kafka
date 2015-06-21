@@ -97,7 +97,9 @@ public class TestTopology {
     GlobalPartitionInformation globalPartitionInformation = new GlobalPartitionInformation();
     globalPartitionInformation.addPartition(0, Broker.fromString(broker.getBrokerConnectionString()));
     brokerHosts = new StaticHosts(globalPartitionInformation);
-    config = new SpoutConfig(brokerHosts, TOPIC, "kafka-spout-offset-tracking", SPOUT_UNQIUE_ID);
+    config = new SpoutConfig(brokerHosts, TOPIC, "", SPOUT_UNQIUE_ID);
+    // read from the beginning of all the messages
+    config.forceFromStart = true;
   }
 
   private TopologyBuilder getTopology() {

@@ -34,10 +34,11 @@ public class VerboseCollectorBolt extends BaseBasicBolt {
         System.out.println(info +    " >>>>>>>>>>>>>" + msg);
 
         TestTopology.recordRecievedMessage(msg);
-        if (countReceivedMessages == expectedNumMessages) {
-            System.out.println(" +++++++++++++++++++++ MARKING");
-            TestTopology.finishedCollecting.countDown();
-        }
+      if (countReceivedMessages == expectedNumMessages) {
+        System.out.println(" +++++++++++++++++++++ MARKING");
+      }
+      TestTopology.finishedCollecting.countDown();
+
 
         if (countReceivedMessages > expectedNumMessages) {
             System.out.print("Fatal error: too many messages received");
