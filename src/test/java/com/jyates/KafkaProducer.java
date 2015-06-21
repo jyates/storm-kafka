@@ -4,6 +4,8 @@ import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerConfig;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
@@ -24,17 +26,20 @@ public class KafkaProducer {
     config = new ProducerConfig(props);
   }
 
-  public void send(String topic, int messageCount) {
+  public List<KeyedMessage<String, String>> send(String topic, int messageCount) {
     batchCount++;
+    List<KeyedMessage<String, String>> messages = new ArrayList<>(messageCount);
     Producer<String, String> producer = new Producer<String, String>(config);
 
     for (int i = 0; i < messageCount; i++) {
       KeyedMessage<String, String> data =
           new KeyedMessage<String, String>
               (topic, batchCount + "_" + i, Integer.toString(rand.nextInt()));
+      messages.add(data);
       producer.send(data);
     }
     producer.close();
+    return messages;
   }
 
   private Properties getProps() {
